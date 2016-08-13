@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welecome</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link href="/static/css/site.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="bg_img">
+        <p style="text-align: center"><span style="color: lightblue;">This is the head . but i don't know what is put? so...sorry!~</span></p>
+        <div class="from_one">
+            <form action="" method="POST" name="form1">
+                <p><span style="color:white">Username:</span></p>
+                <p><input type="text" name="username" placeholder="Username..." onblur="input_chick();"/></p>
+                <p><span style="color:white;">Password:</span></p>
+                <p><input type="password" name="password" placeholder="Password..." onblur="input_chick();"/></p>
+                <span>
+                    <input class="btn btn-primary" type="submit" value="Sign in"/>
+                    <a href="http://127.0.0.1:5000/register"><input class="btn btn-primary" style="float: right;" type="button" value="Sign up"/></a>
+                </span>
+                <p style="color:darkorange">{{ logging }}</p>
+            </form>
+
+        </div>
+        <div style="margin-left: 300px; margin-top: 120px;float: left;text-align: center">
+            <span style="font-size: 25px;color:white">Welecome to my website.~~</span><br/>
+            <span style="font-size: 18px;color:white">Maybe it's not perfect now ...</span><br/>
+            <span style="font-size: 18px;color:white">I believe i can do it better!!</span><br/>
+            <span style="font-size: 18px;color:white">Thank you for you visit.!!</span>
+        </div>
+    </div>
+
+</body>
+<script>
+    function input_chick() {
+        var _form = document.form1;
+        if (_form.username.value.replace(/^\s*|\s*$/g, "") == "") {
+            alert('User name cannot be empty..!');
+            return;
+        }
+        if (_form.password.value.replace(/^\s*|s*$/g, "") == "" ){
+            alert("Password cannot be empty..!");
+            return;
+        }
+    }
+
+</script>
+</html>

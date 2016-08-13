@@ -1,0 +1,15 @@
+/**
+ * Created by root on 8/12/16.
+ */
+.bg_img{
+    background-image: url("/static/image/sy_bgimg.jpg");
+    height:650px;
+    width:100%;
+}
+
+.from_one{
+    float: right;
+    width:200px;
+    margin-right:150px;
+    margin-top: 80px;;
+}

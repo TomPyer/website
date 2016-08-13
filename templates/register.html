@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <style>
+        .bg_img{
+            background-image: url("/static/image/sy_bgimg.jpg");
+            height:650px;
+            width:100%;
+        }
+        .rg_size{
+            width:350px;
+            height:300px;
+            margin-left:40%;
+            float: left;
+        }
+        .input_size{
+            width:250px;
+        }
+        .font_color{
+            color:white;
+        }
+        .yh_text{
+            color: powderblue;
+        }
+        .div_none{
+            display: none;
+        }
+        .div_show{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg_img">
+
+        <div class="rg_size">
+            <span style="height:200px;margin-left: 40%;" class="font_color">
+                <h3>Welecome to register page...</h3>
+            </span>
+            <form action="" method="POST" name="register">
+                <p class="font_color">Username:</p>
+                <input class="input_size" type="text" name='username' placeholder="Please enter your User name." onblur="text_none()"/>
+                <p class="font_color">Password:</p>
+                <input class="input_size" type="password" name='password' placeholder="Please enter your Password." onblur="text_none()"/>
+                <p class="font_color">Email:</p>
+                <input class="input_size" type="email" name='email' placeholder="Please enter your Email." onblur="text_none()">
+                <p class="font_color">phone:</p>
+                <input class="input_size" type="text" name='phone' placeholder="Please enter your telephone number." onblur="text_none()"/>
+                <div>
+                    <input type="submit" value="Submit"/>
+                    <input type="button" value="Agreement" onclick="displaytext();"/>
+                    <a href="http://127.0.0.1:5000/login">Chick return Login page...</a>
+                </div>
+                <div style="color:darkorange; font-size: 22px;">
+                    {{ logging }}
+                </div>
+            </form>
+        </div>
+        <div class="yh_text">
+            <div class="div_none" id="agreement">
+                <span style="font-size:25px">Registered user agreement</span><br/>
+                <span>     Thank you for your registration, here only a secret that no other related agreements,</span><br>
+                <span>First of all, this website will not reveal your personal information,</span><br/>
+                <span>Although this is in fact you do not fill in the number of effective information,</span><br/>
+                <span>Because no matter whether your mailbox or phone number is valid or not, you can complete the registration,</span><br/>
+                <span>Of course, in order to avoid forgetting to login account and password, or recommended to fill in the correct phone number,</span><br/>
+                <span>This is convenient for me to help you find your account and password.</span><br/>
+                <span>Do not worry about your mobile phone or mail will receive spam, we do not undertake any advertising, please rest assured.</span><br/>
+                <span>It said it seems a little bit more, make do and see, finally, thank you for your registration and use.</span><br/>
+                <!--<span>May not be perfect, but there will always be a good day!!!</span> -->
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function displaytext(){
+        if (document.getElementById('agreement').className == 'div_show'){
+            document.getElementById('agreement').className='div_none';
+        }
+        else {
+            document.getElementById('agreement').className='div_show';
+        }
+    }
+    function text_none(){
+        var _form = document.register;
+        if (_form.username.value.replace(/^\s*|\s*$/g, "") == "") {
+            alert('User name cannot be empty..!');
+            return;
+        }
+        if (_form.password.value.replace(/^\s*|s*$/g, "") == "" ){
+            alert("Password cannot be empty..!");
+            return;
+        }
+        if (_form.email.value.replace(/^\s*|s*$/g, "") == "" ){
+            alert("Email cannot be empty..!");
+            return;
+        }
+        if (_form.phone.value.replace(/^\s*|s*$/g, "") == "" ){
+            alert("Phone cannot be empty..!");
+            return;
+        }
+    }
+
+</script>
+</html>
