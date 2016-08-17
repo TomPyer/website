@@ -5,6 +5,17 @@
     <title>user_info</title>
 </head>
 <body>
-
+    <div name="userinfo">
+        <div style='background-image: url("/static/image/websitelog.gif");width:10%;height: 180px;'>
+        </div>
+        <div style="">{{ username }}</div>
+        <div>
+            <ul class="breadcrumb">
+                <li>Likes:{{ likes }}</li>
+                <li>Fans:{{ fans }}</li>
+                <li>Count:{{ count }}</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
