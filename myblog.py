@@ -13,6 +13,10 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
+@app.route('/welecome')
+def welecome():
+    return render_template('welecome.html')
+
 @app.route('/register',methods=['GET','POST'])
 def register():
     if request.method == 'GET':
