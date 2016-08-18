@@ -22,6 +22,14 @@ def welecome():
     else:
         return render_template('welecome.html')
 
+@app.route('/community')
+def community():
+    return render_template('community.html')
+
+@app.route('/care')
+def care():
+    return render_template('care.html')
+
 @app.route('/collect')
 def collect():
     return render_template('collect.html')
