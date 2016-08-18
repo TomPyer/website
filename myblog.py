@@ -18,7 +18,7 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/welecome/',methods=['GET','POST'])
+@app.route('/welecome/')
 def welecome():
     try:
         if session['username']:
