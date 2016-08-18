@@ -13,13 +13,13 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:wobuzhidaoA123.@localhost:
 db = SQLAlchemy(app)
 
 class User(db.Model):
-    __talbename__ = 'User'
+    __tablename__ = 'User'
 
     id =  db.Column(db.Integer,primary_key=True)
-    username = db.Column(db.String(80),unique=True)
-    password = db.Column(db.String(80),unique=True)
-    email = db.Column(db.String(320),unique=True)
-    phone = db.Column(db.String(32),unique=True)
+    username = db.Column(db.String(80),index=True)
+    password = db.Column(db.String(80),index=True)
+    email = db.Column(db.String(320),index=True)
+    phone = db.Column(db.String(32),index=True)
 
     def __init__(self,username,password,email,phone):
         self.username =username

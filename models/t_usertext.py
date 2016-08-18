@@ -12,47 +12,31 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:wobuzhidaoA123.@localhost:3306/flask_work'
 db = SQLAlchemy(app)
 
-class usertext(object):
-    id = db.Column(db.Integer,primary_key=True)
-    user = db.Column(db.String(80),unique=True)
-    text = db.Column(db.String(1024),unique=True)
-    createTime = db.Column(db.DateTime,unique=True)
-    forward = db.Column(db.Integer,unique=True)
-    forwardUser = db.Column(db.String(1024),unique=True)
-    comment = db.Column(db.Integer,unique=True)
-    commentUser = db.Column(db.String(1024),unique=True)
-    likes = db.Column(db.Integer,unique=True)
-    likesUser = db.Column(db.String(1024),unique=True)
-    collection = db.Column(db.Integer,unique=True)
-    collectionUser = db.Column(db.String(1024),unique=True)
-    topFlag = db.Column(db.Integer,unique=True)
+class Usertext(db.Model):
+    __tablename__ = 'Usertext'
 
-    def __init__(self,id,user,text,createtime,forward,forwarduser,comment,commentuser,likes,likesuser,collection,collectionuser,topflag):
-        self.id = id
+    id = db.Column(db.Integer,primary_key=True)
+    user = db.Column(db.String(80),index=True)
+    text = db.Column(db.String(1024),index=True)
+    createTime = db.Column(db.DateTime,index=True)
+
+    def __init__(self,user,text,createtime):
         self.user = user
         self.text = text
         self.createTime = createtime
-        self.forward = forward
-        self.forwardUser = forwarduser
-        self.comment = comment
-        self.commentUser = commentuser
-        self.likes = likes
-        self.likesUser = likesuser
-        self.collection = collection
-        self.collectionUser = collectionuser
-        self.topFlag = topflag
 
-    def add(self):
-        pass
+    def __repr__(self):
+        return '%s (%r,%r,%r,%r)' %(self.__class__.__name__,self.user,self.text,self.createTime,self.forward)
 
-    def remove(self):
-        pass
+    def inset(a):
+        db.session.add(a)
+        db.session.commit()
+        return 'yes'
 
-    def update(self):
-        pass
+    def into_sql(sql):
+        db.engine.execute(sql)
+        return 'yes'
 
-    def search(self):
-        pass
 
 if __name__ == "__main__":
     db.create_all()

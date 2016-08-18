@@ -24,7 +24,7 @@
                 <p><span style="color:white">Username:</span></p>
                 <p><input type="text" name="username" placeholder="Username..." onblur="input_chick();"/></p>
                 <p><span style="color:white;">Password:</span></p>
-                <p><input type="password" name="password" placeholder="Password..." onblur="input_chick();"/></p>
+                <p><input type="password" name="password" placeholder="Password..." /></p>
                 <span>
                     <input class="btn btn-primary" type="submit" value="Sign in"/>
                     <a href="/register"><input class="btn btn-primary" style="float: right;" type="button" value="Sign up"/></a>
@@ -51,7 +51,6 @@
         }
         if (_form.password.value.replace(/^\s*|s*$/g, "") == "" ){
             alert("Password cannot be empty..!");
-            return;
         }
     }
 

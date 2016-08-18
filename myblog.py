@@ -6,6 +6,10 @@ from flask import session, redirect, url_for, escape
 from flask import render_template
 from flask import Flask
 from models.u_user import User
+from models.t_usertext import Usertext
+from models.t_textstatus import TextStatus
+import datetime
+
 app = Flask(__name__)
 
 
@@ -14,15 +18,36 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/welecome',methods=['GET','POST'])
+@app.route('/welecome/',methods=['GET','POST'])
 def welecome():
-    if request.method =='POST':
-        if request.form['texts'] :
-            # Search
-            body = request.form['text']
+    try:
+        if session['username']:
+            return render_template('welecome.html')
+        else:
+            return redirect(url_for('login'))
+    except:
+        return redirect(url_for('login'))
 
-    else:
-        return render_template('welecome.html')
+
+@app.route('/search')
+def search():
+    a = request.values.get('search_body')
+    print a
+    b = Usertext.query.endswith(a).all()
+    #sql = "SELECT * FROM Usertext WHERE find_in_set(a, text);"
+    print b
+    return redirect(url_for('welecome'))
+
+@app.route('/add_body')
+def add_body():
+    a = request.values.get('add_text')
+    print a
+    nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    t = Usertext(user=session['username'],text=a,createtime=nowtime)
+    Usertext.inset(t)
+    s = TextStatus(textcode=session['username'],forward=0,forwardUser=None,comment=0,commentUser=None,likes=0,likesUser=None,collection=0,collectionUser=None)
+    TextStatus.inset(s)
+    return render_template('welecome.html',search_body=a)
 
 @app.route('/community')
 def community():
@@ -61,20 +86,26 @@ def register():
                 return render_template('welecome.html',username=request.form['username'])
             else:
                 pass
+
+
 @app.route('/login',methods=['GET','POST'])
 def login():
-    if request.method == 'GET':
+    try:
+        if request.method == 'GET':
+            if session['username']:
+                return redirect(url_for('welecome'))
+            else:
+                return render_template('login.html')
+    except:
         return render_template('login.html')
     if request.method == 'POST':
         if request.form['username'] and request.form['password']:
             a={'username':'','password':'','email':'','phone':'',}
             try:
                 u = User.query.filter_by(username = request.form['username']).first()
-                print type(u)
-                print u.password
                 if u.password == request.form['password']:
                     session['username']= request.form['username']
-                    return render_template('welecome.html')
+                    return redirect(url_for('welecome'))
             except Exception,e:
                 print 'fail %s'%e
             return render_template('login.html',logging='Username or Password error...')
@@ -85,8 +116,9 @@ def login():
 def logout():
     if request.method == 'GET':
         session.pop('username',None)
+        return redirect(url_for('login'))
     else:
-        return render_template('welecome.html')
+        return redirect(url_for('login'))
 
 # set the secret key.  keep this really secret:
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
