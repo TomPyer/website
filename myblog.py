@@ -2,7 +2,7 @@
 #!/usr/bin/python
 
 from flask import request
-from flask import session, redirect, url_for, escape
+from flask import session, redirect, url_for, escape, flash
 from flask import render_template
 from flask import Flask
 from models.u_user import User
@@ -18,17 +18,12 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/welecome/')
+@app.route('/welecome',methods=['GET','POST'])
 def welecome():
-    try:
-        if session['username']:
-            return render_template('welecome.html')
-        else:
-            return redirect(url_for('login'))
-    except:
-        return redirect(url_for('login'))
-
-
+    if request.method == 'GET':
+        return render_template('welecome.html')
+    else:
+        return render_template('welecome.html')
 @app.route('/search')
 def search():
     a = request.values.get('search_body')
@@ -40,14 +35,16 @@ def search():
 
 @app.route('/add_body')
 def add_body():
-    a = request.values.get('add_text')
-    print a
-    nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    t = Usertext(user=session['username'],text=a,createtime=nowtime)
-    Usertext.inset(t)
-    s = TextStatus(textcode=session['username'],forward=0,forwardUser=None,comment=0,commentUser=None,likes=0,likesUser=None,collection=0,collectionUser=None)
-    TextStatus.inset(s)
-    return render_template('welecome.html',search_body=a)
+    try:
+        a = request.values.get('add_text')
+        nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        t = Usertext(user=session['username'],text=a,createtime=nowtime)
+        Usertext.inset(t)
+        s = TextStatus(textcode=session['username'],forward=0,forwardUser=None,comment=0,commentUser=None,likes=0,likesUser=None,collection=0,collectionUser=None)
+        TextStatus.inset(s)
+        return render_template('welecome.html',search_body=a)
+    except:
+        return redirect(url_for('welecome'))
 
 @app.route('/community')
 def community():

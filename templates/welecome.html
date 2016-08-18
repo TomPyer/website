@@ -17,7 +17,7 @@
     <link href="/static/css/site.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div style="float: left; height: 68px; width: 71px; background-image: url('');"></div>
+    <div style="float: left; height: 68px; width: 71px;"></div>
     <div style="float: left;height: 68px; width: 90%;">
         <div style="float: left;margin-left: 400px;margin-top: 20px;">
             <form action="" method="POST" name="search_text">
@@ -41,7 +41,7 @@
                 </li>
                 <li class="divider"></li>
                 <li style="width: 100%;"><a href="/community">Community</a></li>
-                <li style="width: 100%;"><a href="/cartexte">Care</a></li>
+                <li style="width: 100%;"><a href="/care">Care</a></li>
             </ul>
         </div>
         <div style="width: 50%; height:auto;float: left;">
@@ -51,7 +51,7 @@
                     <textarea name="text" class="form-control" rows="5" placeholder="Thanks to the Bootstrap you can independently adjust the size, but please do not..."></textarea>
                 </div>
                 <button style="float: right;" onclick="write_null()">Cancel</button>
-                <button type="button" style="float: right;" onclick="Add_body()">Commit</button>
+                <button style="float: right;" onclick="Add_body()">Commit</button>
             </form>
             <div>
                 {{ search_body }}
@@ -70,11 +70,11 @@
 <script>
     function write_null(){
         var _textbody=document.text_body.text.value;
-        if (_textbody == ''){
-            return;
+        if (_textbody != '') {
+            _textbody = null;
         }
         else{
-            _textbody = null;
+            return false
         }
     }
     function Search_all(){
@@ -83,13 +83,16 @@
             window.location.href='http://127.0.0.1:5000/search'+'?search_body='+_search;
         }
         else{
-            return ;
+            return false
         }
     }
     function Add_body(){
         var _textbody = document.text_body.text.value;
-        if (_textbody != ''){
-            window.location.href='http://127.0.0.1:5000/add_body'+ '?add_text=' + _textbody;
+        if (_textbody != '') {
+            window.location.href = 'http://127.0.0.1:5000/add_body' + '?add_text=' + _textbody;
+        }
+        else{
+            return false;
         }
     }
 </script>

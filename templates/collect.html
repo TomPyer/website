@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welecome</title>
+    <title>collect</title>
     <!-- 新 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
@@ -22,7 +22,7 @@
         <div style="float: left;margin-left: 400px;margin-top: 20px;">
             <form action="" method="POST" name="search_text">
                 <input name="searchs" style="width: 300px;" type="text" placeholder="null"/>
-                <input type="submit" style="height:25px" value="Search"/>
+                <input type="button" style="height:25px" value="Search" onclick="Search_all()"/>
             </form>
         </div>
         <div style="width: 200px ;float: right; margin-top: 20px;" >
@@ -59,12 +59,32 @@
     </div>
 </body>
 <script>
-    function write_null(){
-        pass
+       function write_null(){
+        var _textbody=document.text_body.text.value;
+        if (_textbody == ''){
+            return;
+        }
+        else{
+            _textbody = null;
+        }
     }
-
-    function commit_text(){
-        pass
+    function Search_all(){
+        var _search = document.search_text.searchs.value;
+        if (_search != ''){
+            window.location.href='http://127.0.0.1:5000/search'+'?search_body='+_search;
+        }
+        else{
+            return ;
+        }
+    }
+    function Add_body(){
+        var _textbody = document.text_body.text.value;
+        if (_textbody != ''){
+            window.location.href='http://127.0.0.1:5000/add_body'+ '?add_text=' + _textbody;
+        }
+        else{
+            return ;
+        }
     }
 </script>
 </html>
