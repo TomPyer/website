@@ -13,9 +13,22 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello World!'
 
-@app.route('/welecome')
+@app.route('/welecome',methods=['GET','POST'])
 def welecome():
-    return render_template('welecome.html')
+    if request.method =='POST':
+        if request.form['texts'] :
+            # Search
+            pass
+    else:
+        return render_template('welecome.html')
+
+@app.route('/collect')
+def collect():
+    return render_template('collect.html')
+
+@app.route('/message')
+def message():
+    return render_template('message.html')
 
 @app.route('/register',methods=['GET','POST'])
 def register():
