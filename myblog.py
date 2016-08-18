@@ -42,6 +42,7 @@ def add_body():
         Usertext.inset(t)
         s = TextStatus(textcode=session['username'],forward=0,forwardUser=None,comment=0,commentUser=None,likes=0,likesUser=None,collection=0,collectionUser=None)
         TextStatus.inset(s)
+        print a
         return render_template('welecome.html',search_body=a)
     except:
         return redirect(url_for('welecome'))
