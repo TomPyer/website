@@ -2,8 +2,9 @@
 #!/usr/bin/python
 
 from flask import request
-from flask import Flask
+from flask import session, redirect, url_for, escape
 from flask import render_template
+from flask import Flask
 from models.u_user import User
 app = Flask(__name__)
 
@@ -18,7 +19,8 @@ def welecome():
     if request.method =='POST':
         if request.form['texts'] :
             # Search
-            pass
+            body = request.form['text']
+
     else:
         return render_template('welecome.html')
 
@@ -71,6 +73,7 @@ def login():
                 print type(u)
                 print u.password
                 if u.password == request.form['password']:
+                    session['username']= request.form['username']
                     return render_template('welecome.html')
             except Exception,e:
                 print 'fail %s'%e
@@ -78,6 +81,15 @@ def login():
         else:
             return render_template('login.html',logging='Username or Password is none...')
 
+@app.route('/logout',methods=['GET','POST'])
+def logout():
+    if request.method == 'GET':
+        session.pop('username',None)
+    else:
+        return render_template('welecome.html')
+
+# set the secret key.  keep this really secret:
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 if __name__ == '__main__':
     app.run()

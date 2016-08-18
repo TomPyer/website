@@ -26,7 +26,7 @@
             </form>
         </div>
         <div style="width: 200px ;float: right; margin-top: 20px;" >
-            <a href="/register">Register    </a>|<a href="/login">    Login</a>
+            <a href="/register">Register    </a>|<a href="/login">    Login</a> |<a href="/logout">       Logout</a>
         </div>
     </div>
     <div style="height: 768px;width:100%;background-image: url(/static/image/294202.jpg);">
@@ -45,13 +45,13 @@
             </ul>
         </div>
         <div style="width: 50%; height:auto;float: left;">
-            <form role="form">
+            <form role="form" name="text_body">
                 <div class="form-group">
                     <label for="name">There's something new about today.</label>
-                    <textarea class="form-control" rows="5" placeholder="Thanks to the Bootstrap you can independently adjust the size, but please do not..."></textarea>
+                    <textarea name="text" class="form-control" rows="5" placeholder="Thanks to the Bootstrap you can independently adjust the size, but please do not..."></textarea>
                 </div>
                 <button style="float: right;" onclick="write_null()">Cancel</button>
-                <button type="submit" style="float: right;"onclick="commit_text()">Commit</button>
+                <button type="submit" style="float: right;">Commit</button>
             </form>
 
         </div>
@@ -66,11 +66,14 @@
 </body>
 <script>
     function write_null(){
-        pass
+        var _textbody=docElem.text_body.text.value;
+        if (_textbody == ''){
+            return;
+        }
+        else{
+            _textbody = null;
+        }
     }
 
-    function commit_text(){
-        pass
-    }
 </script>
 </html>
