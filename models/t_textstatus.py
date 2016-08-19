@@ -47,9 +47,11 @@ class TextStatus(db.Model):
     def inset(a):
         db.session.add(a)
         db.session.commit()
+        return 'yes'
 
     def into_sql(sql):
         db.engine.execute(sql)
+        return 'yes'
 
 if __name__ == "__main__":
     db.create_all()

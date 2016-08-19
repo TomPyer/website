@@ -17,7 +17,7 @@
     <link href="/static/css/site.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div style="float: left; height: 68px; width: 71px;"></div>
+    <div style="float: left; height: 68px; width: 71px;">{{ logging }}</div>
     <div style="float: left;height: 68px; width: 90%;">
         <div style="float: left;margin-left: 400px;margin-top: 20px;">
             <form action="" method="POST" name="search_text">
@@ -26,14 +26,14 @@
             </form>
         </div>
         <div style="width: 200px ;float: right; margin-top: 20px;" >
-            <a href="/register">Register    </a>|<a href="/login">    Login</a> |<a href="/logout">       Logout</a>
+            <a href="/register">Register    </a>|<a href="/login">    Login</a> |<a href="/logout">       Logout</a><p>        {{ name }}</p>
         </div>
     </div>
     <div style="height: 768px;width:100%;background-image: url(/static/image/294202.jpg);">
         <div style="width: 10%; height: 100%;;float: left;">lalala</div>
         <div style="width: 10%; height:300px;float: left;">
             <ul class=" nav nav-list ">
-                <li style="width: 100%;"><a href="/welecome">Home</a></li>
+                <li style="width: 100%;"><a href="/welcome">Home</a></li>
                 <li style="width: 100%;"><a href="/collect">Collect</a></li>
                 <li style="width: 100%;">
                     <i class="icon-hand-right"></i>
@@ -74,26 +74,34 @@
             _textbody = null;
         }
         else{
-            return false
+            return ;
         }
     }
     function Search_all(){
         var _search = document.search_text.searchs.value;
         if (_search != ''){
-            window.location.href='http://127.0.0.1:5000/search'+'?search_body='+_search;
+            window.location.href='http://127.0.0.1:8000/search'+'?search_body='+_search;
         }
         else{
-            return false
+            return ;
         }
     }
     function Add_body(){
         var _textbody = document.text_body.text.value;
         if (_textbody != '') {
-            window.location.href = 'http://127.0.0.1:5000/add_body' + '?add_text=' + _textbody;
+            window.location.href = 'http://127.0.0.1:8000/add_body' + '?add_text=' + _textbody;
         }
         else{
-            return false;
+            return ;
         }
+    }
+    function text_info(){
+        var tmp=document.getElementById("return_info").value;
+        console.log(tmp);
+        for(i=0;i<=5;i++){
+             tmp+="<div>"+i+"</div>";
+        }
+        document.getElementById("text_info").innerHTML=tmp;
     }
 </script>
 </html>
