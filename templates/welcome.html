@@ -14,6 +14,7 @@
 
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <link href="/static/css/site.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -49,10 +50,29 @@
                 <div class="form-group">
                     <label for="name">There's something new about today.</label>
                     <textarea name="text" class="form-control" rows="5" placeholder="Thanks to the Bootstrap you can independently adjust the size, but please do not..."></textarea>
-                </div>
+
                 <button style="float: right;" onclick="write_null()">Cancel</button>
                 <button style="float: right;" onclick="Add_body()">Commit</button>
+                </div><br/>
             </form>
+        <div>
+            <ul>
+                {% for i in text_info %}
+                <li>
+                    <div style="float: left">{{ i.user }}&nbsp&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp&nbsp</div><div style="float: left">{{ i.createTime }}</div><br/>
+                    <textarea class="form-control" rows="3" disabled="disabled">{{ i.text }}</textarea>
+                    <div style="width: 65px;height: 20px;background-color: white">
+                        <div style="float: right ;color:dodgerblue">
+                            <i class="fa fa-reply-all " aria-hidden="true"></i>
+                            <i class="fa fa-comments " aria-hidden="true"></i>
+                            <i class="fa fa-thumbs-o-up " aria-hidden="true"></i>
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        </div>
+                    </div><br/>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
             <div>
                 {{ search_body }}
                 {{ text_body }}

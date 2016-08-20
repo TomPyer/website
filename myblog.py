@@ -31,8 +31,6 @@ def welcome():
         try:
             if session['username']:
                 b = Usertext.query.filter_by(user = session['username']).all()
-#                for i in range(len(b)):
-#                    print b[i].user,b[i].text, b[i].createTime
                 return render_template('welcome.html',name = session['username'],text_info = b)
         except:
             return redirect(url_for('login'))
