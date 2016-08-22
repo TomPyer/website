@@ -21,21 +21,22 @@ def hello_world():
 def welcome():
     '''print User.query.limit(10).all() #查询返回的数据的数目
 
-        data_all=User.query.all()
+        data_all=User.query.all()me
         print (data_all)#查询全部
 
         for i in range(len(data_all)):
          print data_all[i].username+" "+data_all[i].email+" "+data_all[i].phone
     '''
+    b = Usertext.query.filter_by(user = session['username']).all()
+    b = b[::-1]
     if request.method == 'GET':
         try:
             if session['username']:
-                b = Usertext.query.filter_by(user = session['username']).all()
                 return render_template('welcome.html',name = session['username'],text_info = b)
         except:
             return redirect(url_for('login'))
     else:
-        return render_template('welcome.html',text_body = request.form['text'])
+        return render_template('welcome.html',text_info = b)
 
 
 @app.route('/search')
