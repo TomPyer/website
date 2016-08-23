@@ -63,10 +63,10 @@
                     <textarea class="form-control" rows="3" disabled="disabled">{{ i.text }}</textarea>
                     <div style="width:140px;height: 26px">
                         <div style="float: right ;">
-                            <button><i class="fa fa-reply-all " aria-hidden="true">{{ forward }}</i></button>
-                            <button><i class="fa fa-comments " aria-hidden="true">{{ comment }}</i></button>
-                            <button><i class="fa fa-thumbs-o-up " aria-hidden="true">{{ likes }}</i></button>
-                            <button><i class="fa fa-star" aria-hidden="true"></i>{{ collection }}</button>
+                            <button onclick="add_forward()"><i class="fa fa-reply-all " aria-hidden="true">{{ i.forward }}</i></button>
+                            <button onclick="add_comment()"><i class="fa fa-comments " aria-hidden="true">{{ i.comment }}</i></button>
+                            <button onclick="add_likes()"><i class="fa fa-thumbs-o-up " aria-hidden="true">{{ i.likes }}</i></button>
+                            <button onclick="add_collection()"><i class="fa fa-star" aria-hidden="true"></i>{{ i.collection }}</button>
                         </div>
                     </div><br/>
                 </li>
@@ -125,6 +125,18 @@
              tmp+="<div>"+i+"</div>";
         }
         document.getElementById("text_info").innerHTML=tmp;
+    }
+    function add_forward(){
+
+    }
+    function add_comment(){
+
+    }
+    function add_likes(){
+
+    }
+    function add_collection(){
+
     }
 </script>
 </html>

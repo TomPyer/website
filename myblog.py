@@ -7,7 +7,6 @@ from flask import render_template
 from flask import Flask
 from models.u_user import User
 from models.t_usertext import Usertext
-from models.t_textstatus import TextStatus
 import datetime
 
 app = Flask(__name__)
@@ -30,10 +29,18 @@ def welcome():
     try:
         b = Usertext.query.filter_by(user = session['username']).all()
         c = Usertext.query.filter_by(user = session['username']).count()
-        d = TextStatus.query.filter_by(textcode = session['username']).all()
-        num = 0
-        for i in d :
-            num += i.likes
+        praise_num = 0
+        for i in b :
+            praise_num += i.likes
+        forward_num = 0
+        comment_num = 0
+        likes_num = 0
+        collect_num = 0
+        for u in b :
+            forward_num += u.forward
+            comment_num += u.comment
+            likes_num +=  u.likes
+            collect_num += u.collection
         b = b[::-1]
 
     except Exception,e:
@@ -42,10 +49,10 @@ def welcome():
         return render_template('welcome.html',
                                text_info = f,
                                prompt = 'Log in to display personal information.',
-                               forward ='',
-                               comment = '',
-                               likes = '',
-                               collection = '',
+                               forward = forward_num,
+                               comment = comment_num,
+                               likes = likes_num,
+                               collection = collect_num,
                                )
 
     if request.method == 'GET':
@@ -55,11 +62,11 @@ def welcome():
                                        name = session['username'],
                                        text_info = b,
                                        tweets = c,
-                                       praise = num,
-                                       forward ='',
-                                       comment = '',
-                                       likes = '',
-                                       collection = '',
+                                       praise = praise_num,
+                                       forward =forward_num,
+                                       comment = comment_num,
+                                       likes = likes_num,
+                                       collection = collect_num,
                                        )
         except:
             return redirect(url_for('login'))
