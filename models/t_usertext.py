@@ -9,6 +9,7 @@ import MySQLdb
 app=Flask(__name__)
 app.config['SECRET_KEY'] ='hard to guess'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN']=True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:wobuzhidaoA123.@localhost:3306/flask_work'
 db = SQLAlchemy(app)
 
@@ -29,7 +30,7 @@ class Usertext(db.Model):
     collection = db.Column(db.Integer,index=True)
     collectionUser = db.Column(db.String(1024),index=True)
 
-
+    '''
     def __init__(self,user,text,createtime,textcode,forward,forwardUser,comment,commentUser,likes,likesUser,collection,collectionUser):
         self.user = user
         self.text = text
@@ -42,13 +43,17 @@ class Usertext(db.Model):
         self.likes = likes
         self.likesUser = likesUser
         self.collection = collection
-        self.collectionUser = collectionUser
+        self.collectionUser = collectionUser '''
 
     def __repr__(self):
         return '%s (%r,%r,%r)' %(self.__class__.__name__,self.user,self.text,self.createTime)
 
     def inset(a):
         db.session.add(a)
+        db.session.commit()
+        return 'yes'
+
+    def commit(self):
         db.session.commit()
         return 'yes'
 

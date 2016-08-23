@@ -7,6 +7,7 @@ from flask import render_template
 from flask import Flask
 from models.u_user import User
 from models.t_usertext import Usertext
+from flask_sqlalchemy import SQLAlchemy
 import datetime
 
 app = Flask(__name__)
@@ -26,24 +27,28 @@ def welcome():
         for i in range(len(data_all)):
          print data_all[i].username+" "+data_all[i].email+" "+data_all[i].phone
     '''
+    forward_num = int(0)
+    comment_num = int(0)
+    likes_num = int(0)
+    collect_num = int(0)
     try:
         b = Usertext.query.filter_by(user = session['username']).all()
         c = Usertext.query.filter_by(user = session['username']).count()
         praise_num = 0
+
         for i in b :
             praise_num += i.likes
-        forward_num = 0
-        comment_num = 0
-        likes_num = 0
-        collect_num = 0
+
         for u in b :
             forward_num += u.forward
             comment_num += u.comment
-            likes_num +=  u.likes
+            likes_num += u.likes
             collect_num += u.collection
+
         b = b[::-1]
 
     except Exception,e:
+        print e
         f = Usertext.query.all()
         f = f[::-1]
         return render_template('welcome.html',
@@ -83,6 +88,39 @@ def search():
     #print b
     return redirect(url_for('welcome'))
 
+@app.route('/add_fclc')
+def add_fclc():
+    re = ''
+    t = Usertext()
+    a = request.values.get('fclc')
+    b = request.values.get('textid')
+    text = Usertext.query.filter_by(id=b).first()
+
+    if int(a) == 1 :
+        if session['username'] in text.forwardUser :
+            return render_template('welcome.html',logging = 'Sorry,You have forwarded this blog.')
+        text.forward += 1
+        text.forwardUser += session['username']
+        re = t.commit()
+    if int(a) == 2:
+        pass
+    if int(a) == 3:
+        if session['username'] in text.likesUser:
+            return render_template('welcome.html',logging = 'Sorry,You have liked this blog.')
+        text.likes += 1
+        text.likesUser += session['username']
+        re = t.commit()
+    if int(a) == 4:
+        if session['username'] in text.collectionUser:
+            return render_template('welcome.html',logging = 'Sorry,You have collected this blog.')
+        text.collection +=1
+        text.collectionUser += session['username']
+        re = t.commit()
+    if re == 'yes':
+        return redirect(url_for('welcome'))
+    else:
+        return render_template('welcome.html',logging = 'Sorry,operation failed!')
+
 @app.route('/add_body')
 def add_body():
     a = request.values.get('add_text')
@@ -91,19 +129,17 @@ def add_body():
         t = Usertext(user=session['username'],
                      text=a,
                      createtime=nowtime,
+                     textcode='',
+                     forward=0,
+                     forwardUser='',
+                     comment=0,
+                     commentUser='',
+                     likes=0,
+                     likesUser='',
+                     collection=0,
+                     collectionUser='',
                      )
         re = Usertext.inset(t)
-        s = TextStatus(textcode=session['username'],
-                       forward=0,
-                       forwardUser=None,
-                       comment=0,
-                       commentUser=None,
-                       likes=0,
-                       likesUser=None,
-                       collection=0,
-                       collectionUser=None,
-                       )
-        re_t = TextStatus.inset(s)
     except Exception,e:
         print e
         return render_template('welcome.html',search_body=a)
