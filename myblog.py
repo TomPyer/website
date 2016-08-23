@@ -27,16 +27,46 @@ def welcome():
         for i in range(len(data_all)):
          print data_all[i].username+" "+data_all[i].email+" "+data_all[i].phone
     '''
-    b = Usertext.query.filter_by(user = session['username']).all()
-    b = b[::-1]
+    try:
+        b = Usertext.query.filter_by(user = session['username']).all()
+        c = Usertext.query.filter_by(user = session['username']).count()
+        d = TextStatus.query.filter_by(textcode = session['username']).all()
+        num = 0
+        for i in d :
+            num += i.likes
+        b = b[::-1]
+
+    except Exception,e:
+        f = Usertext.query.all()
+        f = f[::-1]
+        return render_template('welcome.html',
+                               text_info = f,
+                               prompt = 'Log in to display personal information.',
+                               forward ='',
+                               comment = '',
+                               likes = '',
+                               collection = '',
+                               )
+
     if request.method == 'GET':
         try:
             if session['username']:
-                return render_template('welcome.html',name = session['username'],text_info = b)
+                return render_template('welcome.html',
+                                       name = session['username'],
+                                       text_info = b,
+                                       tweets = c,
+                                       praise = num,
+                                       forward ='',
+                                       comment = '',
+                                       likes = '',
+                                       collection = '',
+                                       )
         except:
             return redirect(url_for('login'))
     else:
-        return render_template('welcome.html',text_info = b)
+        return render_template('welcome.html',
+                               text_info = b,
+                               )
 
 
 @app.route('/search')
@@ -51,9 +81,21 @@ def add_body():
     a = request.values.get('add_text')
     nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
-        t = Usertext(user=session['username'],text=a,createtime=nowtime)
+        t = Usertext(user=session['username'],
+                     text=a,
+                     createtime=nowtime,
+                     )
         re = Usertext.inset(t)
-        s = TextStatus(textcode=session['username'],forward=0,forwardUser=None,comment=0,commentUser=None,likes=0,likesUser=None,collection=0,collectionUser=None)
+        s = TextStatus(textcode=session['username'],
+                       forward=0,
+                       forwardUser=None,
+                       comment=0,
+                       commentUser=None,
+                       likes=0,
+                       likesUser=None,
+                       collection=0,
+                       collectionUser=None,
+                       )
         re_t = TextStatus.inset(s)
     except Exception,e:
         print e
@@ -95,7 +137,11 @@ def register():
         elif c >0:
             return render_template('register.html',logging='Phone is exist!')
         else:
-            u=User(username=request.form['username'],password=request.form['password'],email=request.form['email'],phone=request.form['phone'])
+            u=User(username=request.form['username'],
+                   password=request.form['password'],
+                   email=request.form['email'],
+                   phone=request.form['phone'],
+                   )
             re_log= User.inset(u)
             if re_log == 'yes':
                 return redirect(url_for('welcome.html'))

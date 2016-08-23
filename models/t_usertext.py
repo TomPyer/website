@@ -19,11 +19,30 @@ class Usertext(db.Model):
     user = db.Column(db.String(80),index=True)
     text = db.Column(db.String(1024),index=True)
     createTime = db.Column(db.DateTime,index=True)
+    textcode = db.Column(db.String(100),index=True)
+    forward = db.Column(db.Integer,index=True)
+    forwardUser = db.Column(db.String(1024),index=True)
+    comment = db.Column(db.Integer,index=True)
+    commentUser = db.Column(db.String(1024),index=True)
+    likes = db.Column(db.Integer,index=True)
+    likesUser = db.Column(db.String(1024),index=True)
+    collection = db.Column(db.Integer,index=True)
+    collectionUser = db.Column(db.String(1024),index=True)
 
-    def __init__(self,user,text,createtime):
+
+    def __init__(self,user,text,createtime,textcode,forward,forwardUser,comment,commentUser,likes,likesUser,collection,collectionUser):
         self.user = user
         self.text = text
         self.createTime = createtime
+        self.textcode = textcode
+        self.forward = forward
+        self.forwardUser = forwardUser
+        self.comment = comment
+        self.commentUser = commentUser
+        self.likes = likes
+        self.likesUser = likesUser
+        self.collection = collection
+        self.collectionUser = collectionUser
 
     def __repr__(self):
         return '%s (%r,%r,%r)' %(self.__class__.__name__,self.user,self.text,self.createTime)
