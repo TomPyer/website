@@ -48,7 +48,8 @@ class Usertext(db.Model):
     def __repr__(self):
         return '%s (%r,%r,%r)' %(self.__class__.__name__,self.user,self.text,self.createTime)
 
-    def inset(a):
+    def inset(self,user,text,createtime):
+        a = Usertext(user=user,text=text,createTime=createtime,textcode='',forward=0,forwardUser='',comment=0,commentUser='',likes=0,likesUser='',collection=0,collectionUser='')
         db.session.add(a)
         db.session.commit()
         return 'yes'

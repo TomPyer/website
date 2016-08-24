@@ -126,24 +126,14 @@ def add_body():
     a = request.values.get('add_text')
     nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
-        t = Usertext(user=session['username'],
-                     text=a,
-                     createtime=nowtime,
-                     textcode='',
-                     forward=0,
-                     forwardUser='',
-                     comment=0,
-                     commentUser='',
-                     likes=0,
-                     likesUser='',
-                     collection=0,
-                     collectionUser='',
-                     )
-        re = Usertext.inset(t)
+        t = Usertext()
+        re = t.inset(session['username'],a,nowtime)
+        if re != 'yes':
+            return render_template('welcome.html',logging='Inset text faild.')
     except Exception,e:
         print e
-        return render_template('welcome.html',search_body=a)
-    return render_template('welcome.html',search_body=a)
+        return redirect(url_for('welcome'))
+    return redirect(url_for('welcome'))
 #    if re == 'yes' and re_t == 'yes':
 
 #    else:
