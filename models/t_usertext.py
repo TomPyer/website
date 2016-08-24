@@ -51,12 +51,16 @@ class Usertext(db.Model):
     def inset(self,user,text,createtime):
         a = Usertext(user=user,text=text,createTime=createtime,textcode='',forward=0,forwardUser='',comment=0,commentUser='',likes=0,likesUser='',collection=0,collectionUser='')
         db.session.add(a)
+        print 'This is inset !'
         db.session.commit()
         return 'yes'
 
     def commit(self):
         db.session.commit()
         return 'yes'
+
+    def add_comment(self,user,text,createtime):
+        pass
 
     def into_sql(sql):
         db.engine.execute(sql)

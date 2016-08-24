@@ -125,13 +125,14 @@ def add_fclc():
 def add_body():
     a = request.values.get('add_text')
     nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    user = session['username']
     try:
         t = Usertext()
-        re = t.inset(session['username'],a,nowtime)
+        re = t.inset(user,a,nowtime)
         if re != 'yes':
             return render_template('welcome.html',logging='Inset text faild.')
     except Exception,e:
-        print e
+        print e.message
         return redirect(url_for('welcome'))
     return redirect(url_for('welcome'))
 #    if re == 'yes' and re_t == 'yes':
