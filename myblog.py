@@ -53,7 +53,7 @@ def welcome():
         f = f[::-1]
         return render_template('welcome.html',
                                text_info = f,
-                               prompt = 'Log in to display personal information.',
+                               prompt = 'Please login first.',
                                forward = forward_num,
                                comment = comment_num,
                                likes = likes_num,
@@ -95,31 +95,32 @@ def add_fclc():
     a = request.values.get('fclc')
     b = request.values.get('textid')
     text = Usertext.query.filter_by(id=b).first()
+    try:
+        if int(a) == 1 :
+            if session['username'] in text.forwardUser :
+                return render_template('welcome.html',logging = '您已经转发过这条博客。')
+            text.forward += 1
+            text.forwardUser += session['username']
+            re = t.commit()
+        elif int(a) == 2:
+            pass
+        elif int(a) == 3:
+            if session['username'] in text.likesUser:
+                return render_template('welcome.html',logging = '您已经标记过该博客为喜欢到内容。')
+            text.likes += 1
+            text.likesUser += session['username']
+            re = t.commit()
+        elif int(a) == 4:
+            if session['username'] in text.collectionUser:
+                return render_template('welcome.html',logging = '您已经收藏过这条博客。')
+            text.collection +=1
+            text.collectionUser += session['username']
+            re = t.commit()
+        elif re == 'yes':
+            return redirect(url_for('welcome'))
+        else:
+            return render_template('welcome.html',logging = '操作失败。')
 
-    if int(a) == 1 :
-        if session['username'] in text.forwardUser :
-            return render_template('welcome.html',logging = 'Sorry,You have forwarded this blog.')
-        text.forward += 1
-        text.forwardUser += session['username']
-        re = t.commit()
-    if int(a) == 2:
-        pass
-    if int(a) == 3:
-        if session['username'] in text.likesUser:
-            return render_template('welcome.html',logging = 'Sorry,You have liked this blog.')
-        text.likes += 1
-        text.likesUser += session['username']
-        re = t.commit()
-    if int(a) == 4:
-        if session['username'] in text.collectionUser:
-            return render_template('welcome.html',logging = 'Sorry,You have collected this blog.')
-        text.collection +=1
-        text.collectionUser += session['username']
-        re = t.commit()
-    if re == 'yes':
-        return redirect(url_for('welcome'))
-    else:
-        return render_template('welcome.html',logging = 'Sorry,operation failed!')
 
 @app.route('/add_body')
 def add_body():
@@ -130,7 +131,7 @@ def add_body():
         t = Usertext()
         re = t.inset(user,a,nowtime)
         if re != 'yes':
-            return render_template('welcome.html',logging='Inset text faild.')
+            return render_template('welcome.html',logging='查询信息失败。')
     except Exception,e:
         print e.message
         return redirect(url_for('welcome'))
@@ -165,11 +166,11 @@ def register():
         b = User.query.filter_by(email = request.form['email']).count()
         c = User.query.filter_by(phone = request.form['phone']).count()
         if a > 0 :
-            return render_template('register.html',logging='Username is exist!')
+            return render_template('register.html',logging='用户名已被注册。')
         elif b > 0:
-            return render_template('register.html',logging='Email is exist!')
+            return render_template('register.html',logging='邮箱已被注册。')
         elif c >0:
-            return render_template('register.html',logging='Phone is exist!')
+            return render_template('register.html',logging='手机号已被注册。')
         else:
             u=User(username=request.form['username'],
                    password=request.form['password'],
@@ -203,9 +204,9 @@ def login():
                     return redirect(url_for('welcome'))
             except Exception,e:
                 print 'fail %s'%e
-            return render_template('login.html',logging='Username or Password error...')
+            return render_template('login.html',logging='用户名或密码错误！')
         else:
-            return render_template('login.html',logging='Username or Password is none...')
+            return render_template('login.html',logging='用户名或密码不能为空！')
 
 @app.route('/logout',methods=['GET','POST'])
 def logout():

@@ -26,36 +26,36 @@
         <div style=" float: left;margin-left: 400px;margin-top: 20px;">
             <form action="" method="POST" name="search_text">
                 <input name="searchs" style="width: 300px;" type="text" placeholder="null"/>
-                <input type="button" style="height:25px" value="Search" onclick="Search_all()"/>
+                <input type="button" style="height:25px" value="搜索" onclick="Search_all()"/>
             </form>
         </div>
         <div style="width: 200px ;float: right; margin-top: 20px;" >
-            <a href="/register">Register    </a>|<a href="/login">    Login</a> |<a href="/logout">       Logout</a><p>        {{ name }}</p>
+            <a href="/register">注册    </a>|<a href="/login">    登录</a> |<a href="/logout">       退出</a><p>        {{ name }}</p>
         </div>
     </div>
     <div style="height: 768px;width:100%;background-image: url(/static/image/294202.jpg);">
-        <div style="width: 10%; height: 100%;;float: left;">lalala</div>
+        <div style="width: 10%; height: 100%;;float: left;">左边占位</div>
         <div style="width: 10%; height:300px;float: left; ">
             <ul class=" nav nav-list ">
-                <li style="width: 100%;"><a href="/welcome">Home</a></li>
-                <li style="width: 100%;"><a href="/collect">Collect</a></li>
+                <li style="width: 100%;"><a href="/welcome">主页</a></li>
+                <li style="width: 100%;"><a href="/collect">收藏</a></li>
                 <li style="width: 100%;">
                     <i class="icon-hand-right"></i>
-                    <a href="/message">Message</a>
+                    <a href="/message">消息</a>
                 </li>
                 <li class="divider"></li>
-                <li style="width: 100%;"><a href="/community">Community</a></li>
-                <li style="width: 100%;"><a href="/care">Care</a></li>
+                <li style="width: 100%;"><a href="/community">社区</a></li>
+                <li style="width: 100%;"><a href="/care">关注</a></li>
             </ul>
         </div>
         <div style="width: 50%; height:auto;float: left;">
             <form role="form" method="POST" action="" name="text_body">
                 <div class="form-group">
-                    <label for="name">There's something new about today.</label>
-                    <textarea name="text" class="form-control" rows="5" placeholder="Thanks to the Bootstrap you can independently adjust the size, but please do not..."></textarea>
+                    <label for="name">今天又有什么有趣的事情呢？</label>
+                    <textarea name="text" class="form-control" rows="5" placeholder="在这里输入你要发送的内容,感谢bootstrap,你可以随意调整该输入框大小,但是尽量别这么干."></textarea>
 
-                <button style="float: right;" onclick="write_null()">Cancel</button>
-                <button style="float: right;" onclick="Add_body()">Commit</button>
+                <button style="float: right;" onclick="write_null()">取消</button>
+                <button style="float: right;" onclick="Add_body()">发送</button>
                 </div><br/>
             </form>
         <div name="user_textinfo">
@@ -81,15 +81,15 @@
             </div>
         </div>
         <div style="width: 20%; height: 500px;float: left;">
-            <p>lalalal</p>
+            <p>用户信息占位</p>
             <div style="width:100%;height: 200px;">
                 <div style="color: red;">{{ prompt }}</div>
-                <div>name : {{ name }}</div>
-                <div>Tweets : {{ tweets }}</div>
-                <div>Praise : {{ praise }}</div>
+                <div>用户名 : {{ name }}</div>
+                <div>博客数量 : {{ tweets }}</div>
+                <div>被赞数 : {{ praise }}</div>
             </div>
         </div>
-        <div style="width: 10%; height: 100%;float: left;">lflflfl</div>
+        <div style="width: 10%; height: 100%;float: left;">右边占位</div>
     </div>
 </body>
 <script>
@@ -105,7 +105,7 @@
     function Search_all(){
         var _search = document.search_text.searchs.value;
         if (_search != ''){
-            window.location.href='http://127.0.0.1:8000/search'+'?search_body='+_search;
+            window.location.href='http://192.168.2.14/search'+'?search_body='+_search;
         }
         else{
             return ;
@@ -114,7 +114,7 @@
     function Add_body(){
         var _textbody = document.text_body.text.value;
         if (_textbody != '') {
-            window.location.href = 'http://127.0.0.1:8000/add_body' + '?add_text=' + _textbody;
+            window.location.href = 'http://192.168.2.14/add_body' + '?add_text=' + _textbody;
         }
         else{
             return ;
@@ -131,22 +131,22 @@
     function add_forward(){
         var tmp = 1;
         var textcode = document.getElementById('textid').value;
-        window.location.href = 'http://127.0.0.1:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
+        window.location.href = 'http://192.168.2.14:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
     function add_comment(){
         var tmp = 2;
         var textcode = document.getElementById('textid').value;
-        window.location.href = 'http://127.0.0.1:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
+        window.location.href = 'http://192.168.2.14:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
     function add_likes(){
         var tmp = 3;
         var textcode = document.getElementById('textid').value;
-        window.location.href = 'http://127.0.0.1:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
+        window.location.href = 'http://192.168.2.14/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
     function add_collection(){
         var tmp = 4;
         var textcode = document.getElementById('textid').value;
-        window.location.href = 'http://127.0.0.1:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
+        window.location.href = 'http://192.168.2.14/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
 </script>
 </html>

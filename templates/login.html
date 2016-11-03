@@ -19,12 +19,12 @@
 </head>
 <body>
     <div class="bg_img">
-        <p style="text-align: center"><span style="color: lightblue;">This is the head . but i don't know what is put? so...sorry!~</span></p>
+        <p style="text-align: center"><span style="color: lightblue;">导航栏,规划中,尚未指定内容.</span></p>
         <div class="from_one">
             <form action="" method="POST" name="form1">
-                <p><span style="color:white">Username:</span></p>
+                <p><span style="color:white">用户名:</span></p>
                 <p><input type="text" name="username" placeholder="Username..." onblur="input_chick();"/></p>
-                <p><span style="color:white;">Password:</span></p>
+                <p><span style="color:white;">密码:</span></p>
                 <p><input type="password" name="password" placeholder="Password..." /></p>
                 <span>
                     <input class="btn btn-primary" type="submit" value="Sign in"/>
@@ -35,10 +35,10 @@
 
         </div>
         <div style="margin-left: 300px; margin-top: 120px;float: left;text-align: center">
-            <span style="font-size: 25px;color:white">Welcome to my website.~~</span><br/>
-            <span style="font-size: 18px;color:white">Maybe it's not perfect now ...</span><br/>
-            <span style="font-size: 18px;color:white">I believe i can do it better!!</span><br/>
-            <span style="font-size: 18px;color:white">Thank you for you visit.!!</span>
+            <span style="font-size: 25px;color:white">欢迎来到我的博客网站..</span><br/>
+            <span style="font-size: 18px;color:white">也许它现在还并不完整..</span><br/>
+            <span style="font-size: 18px;color:white">我相信自己能一点一点到把它做到更好..</span><br/>
+            <span style="font-size: 18px;color:white">谢谢参观.</span>
         </div>
     </div>
 
@@ -47,11 +47,11 @@
     function input_chick() {
         var _form = document.form1;
         if (_form.username.value.replace(/^\s*|\s*$/g, "") == "") {
-            alert('User name cannot be empty..!');
+            alert('用户名不能为空!');
             return;
         }
         if (_form.password.value.replace(/^\s*|s*$/g, "") == "" ){
-            alert("Password cannot be empty..!");
+            alert("密码不能为空!");
         }
     }
 
