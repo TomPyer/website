@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return redirect(url_for('welcome'))
 
 @app.route('/welcome',methods=['GET','POST'])
 def welcome():
