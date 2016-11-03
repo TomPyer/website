@@ -119,7 +119,9 @@ def add_fclc():
         elif re == 'yes':
             return redirect(url_for('welcome'))
         else:
-            return render_template('welcome.html',logging = '操作失败。')
+            return render_template('welcome.html',logging = 'operation failed..')
+    except Exception, e:
+        return render_template('welcome.html', logging = 'Please login..')
 
 
 @app.route('/add_body')
