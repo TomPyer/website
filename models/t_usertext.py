@@ -53,11 +53,11 @@ class Usertext(db.Model):
         db.session.add(a)
         print '插入数据中'
         db.session.commit()
-        return 'OK！'
+        return 'yes'
 
     def commit(self):
         db.session.commit()
-        return 'OK！'
+        return 'yes'
 
     def add_comment(self,user,text,createtime):
         pass
