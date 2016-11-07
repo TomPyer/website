@@ -8,6 +8,7 @@ from flask import Flask
 from models.u_user import User
 from models.t_usertext import Usertext
 from flask_sqlalchemy import SQLAlchemy
+from TextOperation import TextOperation
 import datetime
 
 app = Flask(__name__)
@@ -95,6 +96,8 @@ def add_fclc():
     a = request.values.get('fclc')
     b = request.values.get('textid')
     text = Usertext.query.filter_by(id=b).first()
+    text_act = TextOperation()
+    now_time = datetime.datetime.now()
     try:
         if int(a) == 1 :
             if session['username'] in text.forwardUser :
@@ -105,11 +108,9 @@ def add_fclc():
         elif int(a) == 2:
             pass
         elif int(a) == 3:
-            if session['username'] in text.likesUser:
-                return render_template('welcome.html',logging = u'您已经标记过该博客为喜欢的内容。')
-            text.likes += 1
-            text.likesUser += session['username']
-            re = t.commit()
+            act_re = text_act.like(session["username"],now_time, b)
+            if act_re == False:
+                return render_template('welcome.html', logging =u'您已经为这条博客点赞过。')
         elif int(a) == 4:
             if session['username'] in text.collectionUser:
                 return render_template('welcome.html',logging = u'您已经收藏过这条博客。')
@@ -198,7 +199,7 @@ def login():
         return render_template('login.html')
     if request.method == 'POST':
         if request.form['username'] and request.form['password']:
-            a={'username':'','password':'','email':'','phone':'',}
+            a = {'username':'','password':'','email':'','phone':'',}
             try:
                 u = User.query.filter_by(username = request.form['username']).first()
                 if u.password == request.form['password']:
