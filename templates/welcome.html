@@ -53,7 +53,6 @@
                 <div class="form-group">
                     <label for="name">今天又有什么有趣的事情呢？</label>
                     <textarea name="text" class="form-control" rows="5" placeholder="在这里输入你要发送的内容."></textarea>
-                <p>还可输入{{ text_size }}字</p>
                 <button style="float: right;" onclick="write_null()">取消</button>
                 <button style="float: right;" onclick="Add_body()">发送</button>
                 </div><br/>
@@ -136,6 +135,7 @@
     function add_comment(){
         var tmp = 2;
         var textcode = document.getElementById('textid').value;
+        var commentbody = document.getElementById().value;
         window.location.href = 'http://192.168.2.14:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
     function add_likes(){

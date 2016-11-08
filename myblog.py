@@ -9,6 +9,7 @@ from models.u_user import User
 from models.t_usertext import Usertext
 from flask_sqlalchemy import SQLAlchemy
 from TextOperation import TextOperation
+from LeftFunction import LeftFunction
 import datetime
 
 app = Flask(__name__)
@@ -28,58 +29,18 @@ def welcome():
         for i in range(len(data_all)):
          print data_all[i].username+" "+data_all[i].email+" "+data_all[i].phone
     '''
-    forward_num = int(0)
-    comment_num = int(0)
-    likes_num = int(0)
-    collect_num = int(0)
-    try:
-        b = Usertext.query.filter_by(user = session['username']).all()
-        c = Usertext.query.filter_by(user = session['username']).count()
-        praise_num = 0
 
-        for i in b :
-            praise_num += i.likes
-
-        for u in b :
-            forward_num += u.forward
-            comment_num += u.comment
-            likes_num += u.likes
-            collect_num += u.collection
-
-        b = b[::-1]
-
-    except Exception,e:
-        print e
-        f = Usertext.query.all()
-        f = f[::-1]
-        return render_template('welcome.html',
-                               text_info = f,
-                               prompt = u'登录后显示',
-                               forward = forward_num,
-                               comment = comment_num,
-                               likes = likes_num,
-                               collection = collect_num,
-                               )
-
-    if request.method == 'GET':
-        try:
-            if session['username']:
-                return render_template('welcome.html',
-                                       name = session['username'],
-                                       text_info = b,
-                                       tweets = c,
-                                       praise = praise_num,
-                                       forward =forward_num,
-                                       comment = comment_num,
-                                       likes = likes_num,
-                                       collection = collect_num,
-                                       )
-        except:
-            return redirect(url_for('login'))
+    left_func = LeftFunction()
+    if session['username']:
+        dic_wel = left_func.welcome(session['username'])
+        return render_template('welcome.html', name=session['username'], text_info=dic_wel['blog_body'], tweets=dic_wel['blog_count_num'],
+                                praise=dic_wel['praise'], forward=dic_wel['forward_num'], comment=dic_wel['comment_num'],
+                                likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
     else:
-        return render_template('welcome.html',
-                               text_info = b,
-                               )
+        username = ''
+        dic_wel = left_func.welcome(username)
+        return render_template('welcome.html', text_info=dic_wel['blog_body'], prompt=u'登录后显示', forward=dic_wel['forward_num'],
+                               comment=dic_wel['comment_num'], likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
 
 
 @app.route('/search')
@@ -91,36 +52,29 @@ def search():
 
 @app.route('/add_fclc')
 def add_fclc():
-    re = ''
-    t = Usertext()
     a = request.values.get('fclc')
     b = request.values.get('textid')
-    text = Usertext.query.filter_by(id=b).first()
     text_act = TextOperation()
     now_time = datetime.datetime.now()
     try:
         if int(a) == 1 :
-            if session['username'] in text.forwardUser :
-                return render_template('welcome.html',logging = u'您已经转发过这条博客。')
-            text.forward += 1
-            text.forwardUser += session['username']
-            re = t.commit()
+            act_re = text_act.forward(session["username"], now_time, b,)
+            if not act_re :
+                return render_template('welcome.html', logging =u'您已经转发过这条博客。')
         elif int(a) == 2:
-            pass
+            comment_body = request.values.get('body')
+            text_act.comment(session["username"], now_time, b, comment_body)
         elif int(a) == 3:
             act_re = text_act.like(session["username"],now_time, b)
-            if act_re == False:
+            if not act_re:
                 return render_template('welcome.html', logging =u'您已经为这条博客点赞过。')
         elif int(a) == 4:
-            if session['username'] in text.collectionUser:
-                return render_template('welcome.html',logging = u'您已经收藏过这条博客。')
-            text.collection +=1
-            text.collectionUser += session['username']
-            re = t.commit()
-        elif re == 'yes':
-            return redirect(url_for('welcome'))
-        else:
-            return render_template('welcome.html',logging = u'操作失败.')
+            act_re = text_act.collection(session['username'], now_time, b)
+            if not act_re:
+                return render_template('welcome.html', logging =u'您已经收藏过这条博客。')
+
+        return render_template('welcome.html')
+
     except Exception, e:
         return render_template('welcome.html', logging = u'请先登录.')
 
@@ -154,6 +108,28 @@ def care():
 
 @app.route('/collect')
 def collect():
+    forward_num = int(0)
+    comment_num = int(0)
+    likes_num = int(0)
+    collect_num = int(0)
+    try:
+        b = Usertext.query.filter_by(user=session['username']).all()
+        c = Usertext.query.filter_by(user=session['username']).count()
+        praise_num = 0
+
+        for i in b :
+            praise_num += i.likes
+
+        for u in b :
+            forward_num += u.forward
+            comment_num += u.comment
+            likes_num += u.likes
+            collect_num += u.collection
+
+        b = b[::-1]
+    except Exception, e:
+        pass
+
     return render_template('collect.html')
 
 @app.route('/message')
