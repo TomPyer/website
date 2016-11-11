@@ -29,7 +29,7 @@
             </form>
         </div>
         <div style="width: 200px ;float: right; margin-top: 20px;" >
-            <a href="/register">注册    </a>|<a href="/login">    登录</a> |<a href="/logout">       退出</a>
+            <a href="/register">注册    </a>|<a href="/login">    登录</a> |<a href="/logout">       退出</a><p> {{ name }}</p>
         </div>
     </div>
     <div style="height: 768px;width:100%;background-image: url(/static/image/294202.jpg);">
@@ -37,7 +37,7 @@
         <div style="width: 10%; height:300px;float: left;">
             <ul class=" nav nav-list ">
                 <li style="width: 100%;"><a href="/welcome">主页</a></li>
-                <li style="width: 100%;"><a href="/collect">收藏</a></li>
+                <li style="width: 100%;background-color:gainsboro"><a href="/collect">收藏</a></li>
                 <li style="width: 100%;">
                     <i class="icon-hand-right"></i>
                     <a href="/message">消息</a>
@@ -48,8 +48,34 @@
             </ul>
         </div>
         <div style="width: 50%; height:auto;float: left;">
+            <form role="form" method="POST" action="" name="text_body">
+                <div class="form-group">
+                    <label for="name">今天又有什么有趣的事情呢？</label>
+                    <textarea name="text" class="form-control" rows="5" placeholder="在这里输入你要发送的内容."></textarea>
+                <button style="float: right;" onclick="write_null()">取消</button>
+                <button style="float: right;" onclick="Add_body()">发送</button>
+                </div><br/>
+            </form>
+        <div name="user_textinfo">
+            <ul class="list-group">
+                {% for i in text_info %}
+                    <div style="float: left">{{ i.user }}&nbsp&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp&nbsp</div><div style="float: left">{{ i.createTime }}</div><br/>
+                    <div style="width: 676px; height: 100px; ">{{ i.text }}</div>
+                    <!--<textarea class="form-control" rows="3" disabled="disabled">{{ i.text }}</textarea> -->
+                    <div style="width:230px;height: 26px">
+                        <div style="float: right ;">
+                            <input style="display: none;" id= "textid" value={{ i.id }} >
+                            <button onclick="add_forward()"><i class="fa fa-reply-all " aria-hidden="true">{{ i.forward }}</i></button>
+                            <button onclick="add_comment()"><i class="fa fa-comments " aria-hidden="true">{{ i.comment }}</i></button>
+                            <button onclick="add_likes()"><i class="fa fa-thumbs-o-up " aria-hidden="true">{{ i.likes }}</i></button>
+                            <button onclick="add_collection()"><i class="fa fa-star" aria-hidden="true"></i>{{ i.collection }}</button>
+                        </div>
+                    </div><br/>
+                {% endfor %}
+            </ul>
+        </div>
             <div>
-                <p>很抱歉,该页面在规划中但尚未完工.</p>
+                {{ logging }}
             </div>
         </div>
         <div style="width: 20%; height: 500px;float: left;">
@@ -58,7 +84,9 @@
                 <div style="color: red;">{{ prompt }}</div>
                 <div>用户名 : {{ name }}</div>
                 <div>博客数量 : {{ tweets }}</div>
-                <div>被赞数 : {{ praise }}</div>
+                <div>被赞数：{{ praise }}</div>
+                <div>关注数：{{ care }}</div>
+                <div>粉丝数：{{ fans }} </div>
             </div>
         </div>
         <div style="width: 10%; height: 100%;float: left;">右边占位</div>

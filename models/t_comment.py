@@ -20,7 +20,7 @@ class CommentBody(db.Model):
     actUser = db.Column(db.String(80),index=True)
     textCode = db.Column(db.String(100),index=True)
     actTime = db.Column(db.DateTime,index=True)
-    commentBody = db.Column(db.String(1024), index=True)
+    commentBody = db.Column(db.String(240), index=True)
 
     def __repr__(self):
         return '%s (%r,%r,%r)' %(self.__class__.__name__,self.user,self.text,self.createTime)

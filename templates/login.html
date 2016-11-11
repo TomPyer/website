@@ -24,15 +24,15 @@
         <p style="text-align: center"><span style="color: lightblue;">导航栏,规划中,尚未指定内容.</span></p>
         <div class="from_one">
             <form action="" method="POST" name="form1">
-                <p><span style="color:white">用户名:</span></p>
-                <p><input type="text" name="username" placeholder="Username..." onblur="input_chick();"/></p>
-                <p><span style="color:white;">密码:</span></p>
+                <p><span style="color:dodgerblue">用户名:</span></p>
+                <p><input type="text" name="username" placeholder="Username..." /></p>
+                <p><span style="color:dodgerblue;">密码:</span></p>
                 <p><input type="password" name="password" placeholder="Password..." /></p>
                 <span>
-                    <input class="btn btn-primary" type="submit" value="Sign in"/>
-                    <a href="/register"><input class="btn btn-primary" style="float: right;" type="button" value="Sign up"/></a>
+                    <input class="btn btn-primary" type="submit" onclick="input_chick();" value="登录"/>
+                    <a href="/register"><input class="btn btn-primary" style="float: right;" type="button" value="注册"/></a>
                 </span>
-                <p style="color:darkorange">{{ logging }}</p>
+                <p style="color:red">{{ logging }}</p>
             </form>
 
         </div>
@@ -40,7 +40,7 @@
             <span style="font-size: 25px;color:white">欢迎来到我的博客网站..</span><br/>
             <span style="font-size: 18px;color:white">也许它现在还并不完整..</span><br/>
             <span style="font-size: 18px;color:white">我相信自己能一点一点到把它做到更好..</span><br/>
-            <span style="font-size: 18px;color:white">谢谢参观.</span>
+            <span style="font-size: 18px;color:dodgerblue">谢谢参观.</span>
         </div>
     </div>
 

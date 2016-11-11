@@ -18,17 +18,17 @@ class Usertext(db.Model):
 
     id = db.Column(db.Integer,primary_key=True)
     user = db.Column(db.String(80),index=True)
-    text = db.Column(db.String(1024),index=True)
+    text = db.Column(db.String(240),index=True)
     createTime = db.Column(db.DateTime,index=True)
     textcode = db.Column(db.String(100),index=True)
     forward = db.Column(db.Integer,index=True)
-    forwardUser = db.Column(db.String(1024),index=True)
+    forwardUser = db.Column(db.String(240),index=True)
     comment = db.Column(db.Integer,index=True)
-    commentUser = db.Column(db.String(1024),index=True)
+    commentUser = db.Column(db.String(240),index=True)
     likes = db.Column(db.Integer,index=True)
-    likesUser = db.Column(db.String(1024),index=True)
+    likesUser = db.Column(db.String(240),index=True)
     collection = db.Column(db.Integer,index=True)
-    collectionUser = db.Column(db.String(1024),index=True)
+    collectionUser = db.Column(db.String(240),index=True)
 
     '''
     def __init__(self,user,text,createtime,textcode,forward,forwardUser,comment,commentUser,likes,likesUser,collection,collectionUser):
@@ -48,7 +48,7 @@ class Usertext(db.Model):
     def __repr__(self):
         return '%s (%r,%r,%r)' %(self.__class__.__name__,self.user,self.text,self.createTime)
 
-    def inset(self,user,text,createtime):
+    def inset(self, user, text, createtime):
         a = Usertext(user=user,text=text,createTime=createtime,textcode='',forward=0,forwardUser='',comment=0,commentUser='',likes=0,likesUser='',collection=0,collectionUser='')
         db.session.add(a)
         print '插入数据中'

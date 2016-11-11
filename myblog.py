@@ -21,26 +21,19 @@ def hello_world():
 
 @app.route('/welcome',methods=['GET','POST'])
 def welcome():
-    '''print User.query.limit(10).all() #查询返回的数据的数目
-
-        data_all=User.query.all()me
-        print (data_all)#查询全部
-
-        for i in range(len(data_all)):
-         print data_all[i].username+" "+data_all[i].email+" "+data_all[i].phone
-    '''
-
     left_func = LeftFunction()
-    if session['username']:
-        dic_wel = left_func.welcome(session['username'])
-        return render_template('welcome.html', name=session['username'], text_info=dic_wel['blog_body'], tweets=dic_wel['blog_count_num'],
-                                praise=dic_wel['praise'], forward=dic_wel['forward_num'], comment=dic_wel['comment_num'],
-                                likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
-    else:
-        username = ''
-        dic_wel = left_func.welcome(username)
-        return render_template('welcome.html', text_info=dic_wel['blog_body'], prompt=u'登录后显示', forward=dic_wel['forward_num'],
-                               comment=dic_wel['comment_num'], likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
+    # try:
+    dic_wel = left_func.welcome(session['username'])
+    return render_template('welcome.html', name=session['username'], text_info=dic_wel['blog_body'], tweets=dic_wel['blog_count_num'],
+                                    praise=dic_wel['praise_num'], forward=dic_wel['forward_num'], comment=dic_wel['comment_num'],
+                                    likes=dic_wel['likes_num'], collection=dic_wel['collect_num'], care=dic_wel['care_num'],
+                                   fans=dic_wel['fans_num'])
+    # except Exception,e:
+    #     print e.message
+    #     print '用户未登录，返回主页。'
+    #     dic_wel = left_func.not_login_welcome()
+    #     return render_template('welcome.html', text_info=dic_wel['blog_body'], prompt=u'登录后显示', forward=dic_wel['forward_num'],
+    #                            comment=dic_wel['comment_num'], likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
 
 
 @app.route('/search')
@@ -52,29 +45,16 @@ def search():
 
 @app.route('/add_fclc')
 def add_fclc():
-    a = request.values.get('fclc')
-    b = request.values.get('textid')
+    act_id = int(request.values.get('fclc'))
+    text_id = request.values.get('textid')
     text_act = TextOperation()
     now_time = datetime.datetime.now()
+    comment_body = request.values.get('body')
     try:
-        if int(a) == 1 :
-            act_re = text_act.forward(session["username"], now_time, b,)
-            if not act_re :
-                return render_template('welcome.html', logging =u'您已经转发过这条博客。')
-        elif int(a) == 2:
-            comment_body = request.values.get('body')
-            text_act.comment(session["username"], now_time, b, comment_body)
-        elif int(a) == 3:
-            act_re = text_act.like(session["username"],now_time, b)
-            if not act_re:
-                return render_template('welcome.html', logging =u'您已经为这条博客点赞过。')
-        elif int(a) == 4:
-            act_re = text_act.collection(session['username'], now_time, b)
-            if not act_re:
-                return render_template('welcome.html', logging =u'您已经收藏过这条博客。')
-
-        return render_template('welcome.html')
-
+        act_re = text_act.choose_act_name(act_id, session['username'], now_time, text_id, comment_body)
+        if act_re != 'yes':
+            return render_template('welcome.html', logging = act_re)
+        return redirect(url_for('welcome'))
     except Exception, e:
         return render_template('welcome.html', logging = u'请先登录.')
 
@@ -82,15 +62,18 @@ def add_fclc():
 @app.route('/add_body')
 def add_body():
     a = request.values.get('add_text')
+    print a
     nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    user = session['username']
+    try:
+        user = session['username']
+    except Exception, e:
+        return render_template('welcome.html', logging = u'登录后才能发送博客。')
     try:
         t = Usertext()
         re = t.inset(user,a,nowtime)
         if re != 'yes':
-            return render_template('welcome.html',logging=u'查询信息失败。')
+            return render_template('welcome.html',logging=u'发送博客失败。')
     except Exception,e:
-        print e.message
         return redirect(url_for('welcome'))
     return redirect(url_for('welcome'))
 #    if re == 'yes' and re_t == 'yes':
@@ -108,29 +91,16 @@ def care():
 
 @app.route('/collect')
 def collect():
-    forward_num = int(0)
-    comment_num = int(0)
-    likes_num = int(0)
-    collect_num = int(0)
+    left_func = LeftFunction()
     try:
-        b = Usertext.query.filter_by(user=session['username']).all()
-        c = Usertext.query.filter_by(user=session['username']).count()
-        praise_num = 0
-
-        for i in b :
-            praise_num += i.likes
-
-        for u in b :
-            forward_num += u.forward
-            comment_num += u.comment
-            likes_num += u.likes
-            collect_num += u.collection
-
-        b = b[::-1]
+        dic_collect_blog = left_func.collect(session['username'])
+        return render_template('collect.html', name=session['username'], text_info=dic_collect_blog['blog_body'], tweets=dic_collect_blog['blog_count_num'],
+                                praise=dic_collect_blog['praise_num'], forward=dic_collect_blog['forward_num'], comment=dic_collect_blog['comment_num'],
+                                likes=dic_collect_blog['likes_num'], collection=dic_collect_blog['collect_num'],care=dic_collect_blog['care_num'],
+                               fans=dic_collect_blog['fans_num'])
     except Exception, e:
-        pass
+        return render_template('welcome.html', logging = u'登录后显示收藏的内容。')
 
-    return render_template('collect.html')
 
 @app.route('/message')
 def message():
@@ -158,7 +128,7 @@ def register():
                    )
             re_log= User.inset(u)
             if re_log == 'yes':
-                return redirect(url_for('welcome.html'))
+                return redirect(url_for('welcome'))
             else:
                 pass
 

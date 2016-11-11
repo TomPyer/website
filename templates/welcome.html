@@ -33,11 +33,11 @@
             <a href="/register">注册    </a>|<a href="/login">    登录</a> |<a href="/logout">       退出</a><p>        {{ name }}</p>
         </div>
     </div>
-    <div style="height: 768px;width:100%;background-image: url(/static/image/294202.jpg);">
+    <div style="height:auto;min-height:768px; width:100%;background-image: url(/static/image/294202.jpg);">
         <div style="width: 10%; height: 100%;;float: left;">左边占位</div>
         <div style="width: 10%; height:300px;float: left; ">
             <ul class=" nav nav-list ">
-                <li style="width: 100%;"><a href="/welcome">主页</a></li>
+                <li style="width: 100%; background-color:gainsboro;"><a href="/welcome">主页</a></li>
                 <li style="width: 100%;"><a href="/collect">收藏</a></li>
                 <li style="width: 100%;">
                     <i class="icon-hand-right"></i>
@@ -86,6 +86,8 @@
                 <div>用户名 : {{ name }}</div>
                 <div>博客数量 : {{ tweets }}</div>
                 <div>被赞数 : {{ praise }}</div>
+                <div>关注数：{{ care }}</div>
+                <div>粉丝数：{{ fans }}</div>
             </div>
         </div>
         <div style="width: 10%; height: 100%;float: left;">右边占位</div>
@@ -130,13 +132,13 @@
     function add_forward(){
         var tmp = 1;
         var textcode = document.getElementById('textid').value;
-        window.location.href = 'http://192.168.2.14:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
+        window.location.href = 'http://192.168.2.14/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
     function add_comment(){
         var tmp = 2;
         var textcode = document.getElementById('textid').value;
         var commentbody = document.getElementById().value;
-        window.location.href = 'http://192.168.2.14:8000/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
+        window.location.href = 'http://192.168.2.14/add_fclc' + '?fclc=' + tmp +'&textid='+textcode;
     }
     function add_likes(){
         var tmp = 3;

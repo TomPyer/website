@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <style>
         .bg_img{
-            background-image: url("/static/image/sy_bgimg.jpg");
+            background-image: url("/static/image/294202.jpg");
             height:650px;
             width:100%;
         }
@@ -33,7 +33,7 @@
             width:250px;
         }
         .font_color{
-            color:white;
+            color:dodgerblue;
         }
         .yh_text{
             color: powderblue;
@@ -55,15 +55,15 @@
             </span>
             <form action="" method="POST" name="register">
                 <p class="font_color">用户名:</p>
-                <input class="input_size" type="text" name='username' placeholder="Please enter your User name." onblur="text_none()"/>
+                <input class="input_size" type="text" name='username' placeholder="Please enter your User name." />
                 <p class="font_color">密码:</p>
-                <input class="input_size" type="password" name='password' placeholder="Please enter your Password." onblur="text_none()"/>
+                <input class="input_size" type="password" name='password' placeholder="Please enter your Password." />
                 <p class="font_color">邮箱:</p>
-                <input class="input_size" type="email" name='email' placeholder="Please enter your Email." onblur="text_none()">
+                <input class="input_size" type="email" name='email' placeholder="Please enter your Email." >
                 <p class="font_color">手机号:</p>
-                <input class="input_size" type="text" name='phone' placeholder="Please enter your telephone number." onblur="text_none()"/>
+                <input class="input_size" type="text" name='phone' placeholder="Please enter your telephone number." />
                 <div>
-                    <input type="submit" value="注册"/>
+                    <input type="submit" value="注册" onclick="text_none()"/>
                     <input type="button" value="协议" onclick="displaytext();"/>
                     <a href="/login">返回登录</a>
                 </div>

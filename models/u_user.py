@@ -15,11 +15,13 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = 'User'
 
-    id =  db.Column(db.Integer,primary_key=True)
+    id = db.Column(db.Integer,primary_key=True)
     username = db.Column(db.String(80),index=True)
     password = db.Column(db.String(80),index=True)
     email = db.Column(db.String(320),index=True)
     phone = db.Column(db.String(32),index=True)
+    careuser = db.Column(db.String(240), index=True)
+    fans = db.Column(db.String(240), index=True)
     """
     def __init__(self,username,password,email,phone):
         self.username =username
