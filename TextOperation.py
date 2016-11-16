@@ -23,23 +23,27 @@ class TextOperation(object):
 
     def choose_act_name(self, act_num, user_code, date, blog_text_id, comment_body):
         text_obj = Usertext.query.filter_by(id=blog_text_id).first()
+        user_obj = User.query.filter_by(username=text_obj.user).first()
+        print user_obj.praisenumber
         if act_num == 1:
             self.forward(text_obj, user_code, date, blog_text_id)
         if act_num == 2:
             self.comment(text_obj, user_code, date, blog_text_id, comment_body)
         if act_num == 3:
-            self.like(text_obj, user_code, date, blog_text_id)
+            self.like(text_obj, user_code, date, blog_text_id, user_obj)
         if act_num == 4:
             self.collection(text_obj, user_code, date, blog_text_id)
         return self.act_log
 
-    def like(self, text_obj, user_code, date, blog_text_id ):
+    def like(self, text_obj, user_code, date, blog_text_id, user_obj):
         if user_code in text_obj.likesUser:
             self.act_log = u'您已经为这条博客点赞过。'
         else:
             text_obj.likes += 1
             text_obj.likesUser += (',' + user_code)
             self.user_text_obj.commit()
+            user_obj.praisenumber += 1
+            self.user_obj.commit()
             self.act_log = self.act_log_obj.inset(user_code, blog_text_id, date, "like",)
             self.act_log_obj.commit()
 

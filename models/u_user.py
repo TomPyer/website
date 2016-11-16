@@ -21,7 +21,11 @@ class User(db.Model):
     email = db.Column(db.String(320),index=True)
     phone = db.Column(db.String(32),index=True)
     careuser = db.Column(db.String(240), index=True)
+    carenumber = db.Column(db.INT(), index=True)
     fans = db.Column(db.String(240), index=True)
+    fansnumber = db.Column(db.INT(), index=True)
+    blognumber = db.Column(db.INT(), index=True)
+    praisenumber = db.Column(db.INT(), index=True)
     """
     def __init__(self,username,password,email,phone):
         self.username =username

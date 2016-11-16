@@ -10,7 +10,7 @@ from models.t_usertext import Usertext
 from flask_sqlalchemy import SQLAlchemy
 from TextOperation import TextOperation
 import datetime
-
+import json
 
 class LeftFunction(object):
     def __init__(self):
@@ -26,18 +26,20 @@ class LeftFunction(object):
         self.user_info_obj = User()
         self.act_log = ''
 
-    def get_fans_num(self, user_code):
+    def get_fans_info(self, user_code):
         """
-        获取用户粉丝数量
+        获取用户粉丝信息,数量
         """
         user_info = self.user_info_obj.query.filter_by(username=user_code).first()
+        self.dic_wel_info['fans_info'] = (user_info.fans.split(','))
         return len(user_info.fans.split(','))
 
-    def get_care_num(self, user_code):
+    def get_care_info(self, user_code):
         """
-        获取用户关注对象数量
+        获取用户关注对象,数量
         """
         user_info = self.user_info_obj.query.filter_by(username=user_code).first()
+        self.dic_wel_info['care_info'] = (user_info.careuser.split(','))
         return len(user_info.careuser.split(','))
 
     def get_praise_num(self, user_code):
@@ -68,10 +70,12 @@ class LeftFunction(object):
             fcpb:
                 fans, care, praise, blog_count
         """
-        self.dic_wel_info['fans_num'] = self.get_fans_num(user_code)
-        self.dic_wel_info['care_num'] = self.get_care_num(user_code)
-        self.dic_wel_info['praise_num'] = self.get_praise_num(user_code)
-        self.dic_wel_info['blog_count_num'] = self.user_text_obj.query.filter_by(user=user_code).count()
+        user_fcpb_info = {}
+        user_fcpb_info['fans_num'] = self.get_fans_info(user_code)
+        user_fcpb_info['care_num'] = self.get_care_info(user_code)
+        user_fcpb_info['praise_num'] = self.get_praise_num(user_code)
+        user_fcpb_info['blog_count_num'] = self.user_text_obj.query.filter_by(user=user_code).count()
+        return user_fcpb_info
 
     def get_user_blog_count(self, user_code):
         """
@@ -86,7 +90,7 @@ class LeftFunction(object):
         用户登录后显示主页面
         """
         blog_body = self.get_user_blog_count(user_code)
-        self.get_user_fcpb_info(user_code)
+        self.dic_wel_info['user_info'] = self.get_user_fcpb_info(user_code)
         self.get_blog_fclc_info(blog_body)
         return self.dic_wel_info
 
@@ -110,6 +114,7 @@ class LeftFunction(object):
             if user_code in all_collect_user:
                 collect_body.append(i)
         self.get_blog_fclc_info(collect_body)
+        self.dic_wel_info['user_info'] = self.get_user_fcpb_info(user_code)
         self.dic_wel_info['blog_body'] = collect_body[::-1]
         return self.dic_wel_info
 
@@ -128,6 +133,19 @@ class LeftFunction(object):
     def care(self, user_code):
         """
         用户登录后显示已关注人信息缩略面板
+        需要返回的参数 dic_care_info,  type= dict
+        dic[tweets] = blog_count_num
+        dic[praise] = praise_count_num
+        dic[care] = care_count_num
+        dic[fans] = fans_count_num
+        *dic[care_user_info] = 登录用户关注的对象信息 type=list
+            care_user_info: username, tweets, fans, care, praise
         """
-        user_info = self.user_info_obj.query.filter_by(username=user_code).first()
+        self.dic_wel_info['login_user_info'] = self.get_user_fcpb_info(user_code)
+        self.dic_wel_info['care_user_info'] = []
+        self.get_care_info(user_code)
+        for i in self.dic_wel_info['care_info']:
+            self.dic_wel_info['care_user_info'].append(self.user_info_obj.query.filter_by(username=i).first())
+        return self.dic_wel_info
+
 

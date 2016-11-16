@@ -22,18 +22,18 @@ def hello_world():
 @app.route('/welcome',methods=['GET','POST'])
 def welcome():
     left_func = LeftFunction()
-    # try:
-    dic_wel = left_func.welcome(session['username'])
-    return render_template('welcome.html', name=session['username'], text_info=dic_wel['blog_body'], tweets=dic_wel['blog_count_num'],
-                                    praise=dic_wel['praise_num'], forward=dic_wel['forward_num'], comment=dic_wel['comment_num'],
-                                    likes=dic_wel['likes_num'], collection=dic_wel['collect_num'], care=dic_wel['care_num'],
-                                   fans=dic_wel['fans_num'])
-    # except Exception,e:
-    #     print e.message
-    #     print '用户未登录，返回主页。'
-    #     dic_wel = left_func.not_login_welcome()
-    #     return render_template('welcome.html', text_info=dic_wel['blog_body'], prompt=u'登录后显示', forward=dic_wel['forward_num'],
-    #                            comment=dic_wel['comment_num'], likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
+    try:
+        dic_wel = left_func.welcome(session['username'])
+        user_info = dic_wel['user_info']
+        return render_template('welcome.html', name=session['username'], text_info=dic_wel['blog_body'], tweets=user_info['blog_count_num'],
+                                    praise=user_info['praise_num'], forward=dic_wel['forward_num'], comment=dic_wel['comment_num'],
+                                    likes=dic_wel['likes_num'], collection=dic_wel['collect_num'], care=user_info['care_num'],
+                                   fans=user_info['fans_num'])
+    except Exception,e:
+        print '用户未登录，返回主页。'
+        dic_wel = left_func.not_login_welcome()
+        return render_template('welcome.html', text_info=dic_wel['blog_body'], prompt=u'登录后显示', forward=dic_wel['forward_num'],
+                               comment=dic_wel['comment_num'], likes=dic_wel['likes_num'], collection=dic_wel['collect_num'])
 
 
 @app.route('/search')
@@ -56,13 +56,13 @@ def add_fclc():
             return render_template('welcome.html', logging = act_re)
         return redirect(url_for('welcome'))
     except Exception, e:
+        print e
         return render_template('welcome.html', logging = u'请先登录.')
 
 
 @app.route('/add_body')
 def add_body():
     a = request.values.get('add_text')
-    print a
     nowtime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:
         user = session['username']
@@ -70,16 +70,15 @@ def add_body():
         return render_template('welcome.html', logging = u'登录后才能发送博客。')
     try:
         t = Usertext()
-        re = t.inset(user,a,nowtime)
+        re = t.inset(user, a, nowtime)
+        u = User.query.filter_by(username=session['username']).first()
+        u.blognumber += 1
+        u.commit()
         if re != 'yes':
             return render_template('welcome.html',logging=u'发送博客失败。')
     except Exception,e:
         return redirect(url_for('welcome'))
     return redirect(url_for('welcome'))
-#    if re == 'yes' and re_t == 'yes':
-
-#    else:
-#        return render_template('welcome.html',logging = 'Faile')
 
 @app.route('/community')
 def community():
@@ -87,18 +86,29 @@ def community():
 
 @app.route('/care')
 def care():
-    return render_template('care.html')
+    left_func = LeftFunction()
+    try:
+        dic_care_info = left_func.care(session['username'])
+        user_info = dic_care_info['login_user_info']
+
+        return render_template('care.html', name=session['username'], tweets=user_info['blog_count_num'], care_user_info=dic_care_info['care_info'],
+                               praise=user_info['praise_num'], care=user_info['care_num'], fans=user_info['fans_num'])
+    except Exception, e:
+        print e
+        return render_template('welcome.html', logging=u'登录后显示关注人信息。')
 
 @app.route('/collect')
 def collect():
     left_func = LeftFunction()
     try:
         dic_collect_blog = left_func.collect(session['username'])
-        return render_template('collect.html', name=session['username'], text_info=dic_collect_blog['blog_body'], tweets=dic_collect_blog['blog_count_num'],
-                                praise=dic_collect_blog['praise_num'], forward=dic_collect_blog['forward_num'], comment=dic_collect_blog['comment_num'],
-                                likes=dic_collect_blog['likes_num'], collection=dic_collect_blog['collect_num'],care=dic_collect_blog['care_num'],
-                               fans=dic_collect_blog['fans_num'])
+        user_info = dic_collect_blog['user_info']
+        return render_template('collect.html', name=session['username'], text_info=dic_collect_blog['blog_body'], tweets=user_info['blog_count_num'],
+                                praise=user_info['praise_num'], forward=dic_collect_blog['forward_num'], comment=dic_collect_blog['comment_num'],
+                                likes=dic_collect_blog['likes_num'], collection=dic_collect_blog['collect_num'],care=user_info['care_num'],
+                               fans=user_info['fans_num'])
     except Exception, e:
+        print e
         return render_template('welcome.html', logging = u'登录后显示收藏的内容。')
 
 
